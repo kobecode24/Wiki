@@ -1,0 +1,33 @@
+
+.gradient-custom-4 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+}
+.left{
+    margin-left: 10px;
+}
+.text-base {
+    font-size: 1rem; /* Equivalent to Tailwind's 'text-base' */
+}
+
+.font-medium {
+    font-weight: 500; /* Equivalent to Tailwind's 'font-medium' */
+}
+
+.text-gray-500 {
+    color: #6b7280; /* Equivalent Tailwind's 'text-gray-500' color */
+}
+
+.hover\:text-gray-900:hover {
+    color: #1f2937; /* Equivalent Tailwind's 'hover:text-gray-900' color on hover */
+}
+
+.background{
+    background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');
+}
