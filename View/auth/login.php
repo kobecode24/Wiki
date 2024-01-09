@@ -20,16 +20,16 @@
                     <div class="card" style="border-radius: 15px;">
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">LOGIN</h2>
-                            <form>
+                            <form method="post" action="../../app/Controller/LoginController.php">
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example3cg">Your Email</label>
-                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                    <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" />
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example4cg">Password</label>
-                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                    <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" />
                                 </div>
 
 

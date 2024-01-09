@@ -21,24 +21,30 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Create an account</h2>
 
-                            <form>
-
+                            <form method="post" action="../../app/Controller/SignupController.php">
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example1cg">Your Name</label>
-                                    <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+                                    <input type="text" name="username" id="form3Example1cg" class="form-control form-control-lg" />
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example3cg">Your Email</label>
-                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                    <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg" />
                                 </div>
 
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example4cg">Password</label>
-                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                    <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" />
                                 </div>
 
+                                <div class="mb-3">
+                                    <p>Your Role:</p>
+                                    <input type="radio" id="editor" name="role_id" value="2"> <!-- Assuming 2 is the ID for 'Editor' -->
+                                    <label for="editor">Editor</label><br>
 
+                                    <input type="radio" id="viewer" name="role_id" value="3"> <!-- Assuming 3 is the ID for 'Viewer' -->
+                                    <label for="viewer">Viewer</label>
+                                </div>
 
                                 <div class="form-check d-flex justify-content-center mb-5">
                                     <p>
