@@ -36,7 +36,7 @@ class LoginController
                     $_SESSION['user_id'] = $user['user_id'];
                     $_SESSION['role_id'] = $user['role_id'];
                     $_SESSION['loggedin'] = true;
-                    header("Location: https://www.youtube.com/");
+                    header("Location: ../../index.php");
                     exit;
                 } else {
                     $errors['general'] = 'Login failed. Please check your credentials.';
