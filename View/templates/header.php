@@ -6,9 +6,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav mx-auto">
-                <a class="nav-link" href="#">Home</a>
-                <a class="nav-link" href="#">Features</a>
-                <a class="nav-link" href="#">Pricing</a>
+                <a class="nav-link" href="index.php">Home</a>
+                <a class="nav-link" href="View/author/author_dashboard.php">Author dashboard</a>
+                <a class="nav-link" href="View/admin/admin_dashboard.php">Admin dashboard</a>
             </div>
         </div>
     </div>

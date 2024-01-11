@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+require_once '../../app/Config/DbConnection.php';
+require_once '../../app/Controller/WikiController.php';
+use MyApp\Controller\WikiController;
+
+$wikiController = new WikiController();
+
+$wikis = $wikiController->getAllWikis();
+
+if (!is_array($wikis)) {
+    $wikis = [];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,6 +101,27 @@
         </nav>
     </div>
     <div id="layoutSidenav_content">
+        <div class="container mt-4">
+            <h1>Manage Wikis</h1>
+            <div class="list-group">
+                <?php foreach ($wikis as $wiki): ?>
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <?= htmlspecialchars($wiki['title']) ?>
+
+                        <form action="../../app/Controller/WikiController.php" method="post">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($wiki['id']) ?>">
+
+                            <?php if ($wiki['is_archived']): ?>
+                                <button type="submit" name="unarchive_wiki" class="btn btn-info btn-sm" value="unarchive">Unarchive</button>
+                            <?php else: ?>
+                                <button type="submit" name="archive_wiki" class="btn btn-warning btn-sm" value="archive">Archive</button>
+                            <?php endif; ?>
+                        </form>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

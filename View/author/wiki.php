@@ -1,3 +1,25 @@
+<?php
+session_start();
+require_once '../../app/Config/DbConnection.php';
+require_once '../../app/Controller/TagController.php';
+require_once '../../app/Controller/CategoryController.php';
+use MyApp\Model\Category;
+use MyApp\Model\Tag;
+
+$categoryModel = new Category();
+$categories = $categoryModel->showAll();
+$tagModel = new Tag();
+$tags = $tagModel->showAll();
+
+$authorId = $_SESSION['user_id'] ?? null;
+
+if (!$authorId) {
+    echo "Please login to add a wiki.";
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +28,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - Wiki Admin</title>
+    <title>Dashboard - Wiki Author</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../../Assets/css/dashboard.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -50,14 +72,13 @@
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Admin
+                        Author
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="categories.php">Categories</a>
-                            <a class="nav-link" href="tags.php">Tags</a>
-                            <a class="nav-link" href="archive_wiki.php">Archived Wikis</a>
+                            <a class="nav-link" href="wiki.php">Wiki Add</a>
+                            <a class="nav-link" href="mywiki.php">My Wikis</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -80,12 +101,47 @@
                             </div>
                         </nav>
                     </div>
-
                 </div>
             </div>
         </nav>
     </div>
     <div id="layoutSidenav_content">
+        <div class="container my-4">
+        <form method="post" action="../../app/Controller/WikiController.php">
+            <input type="hidden" name="author_id" value="<?= htmlspecialchars($authorId) ?>">
+            <h2>Add your wiki</h2>
+            <div class="mb-3">
+                <label for="wikiTitle" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="wikiTitle" name="title" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="wikiContent" class="form-label">Content:</label>
+                <textarea class="form-control" id="wikiContent" name="content" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="wikiCategory" class="form-label">Category:</label>
+                <select class="form-control" id="wikiCategory" name="category">
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <fieldset class="mb-3">
+                <legend>Tags:</legend>
+                <?php foreach ($tags as $tag): ?>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="tag<?= $tag['id'] ?>" name="tags[]" value="<?= $tag['id'] ?>">
+                        <label class="form-check-label" for="tag<?= $tag['id'] ?>"><?= htmlspecialchars($tag['name']) ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </fieldset>
+
+            <button type="submit" name="submit_new_wiki" class="btn btn-primary">Add</button>
+        </form>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

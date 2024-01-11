@@ -1,3 +1,30 @@
+<?php
+session_start();
+require_once '../../app/Config/DbConnection.php';
+require_once '../../app/Controller/WikiController.php';
+require_once '../../app/Controller/CategoryController.php';
+require_once '../../app/Controller/TagController.php';
+use MyApp\Controller\WikiController;
+use MyApp\Model\Category;
+use MyApp\Model\Tag;
+
+$wikiController = new WikiController();
+$categoryModel = new Category();
+$tagModel = new Tag();
+$categories = $categoryModel->showAll();
+$tags = $tagModel->showAll();
+
+$wikiId = $_GET['id'] ?? null;
+$authorId = $_SESSION['user_id'] ?? null;
+
+if (!$authorId || !$wikiId) {
+    echo "Please login";
+    exit;
+}
+
+$wiki = $wikiController->show($wikiId);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +33,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - Wiki Admin</title>
+    <title>Dashboard - Wiki Author</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="../../Assets/css/dashboard.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -50,14 +77,13 @@
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                         <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                        Admin
+                        Author
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="categories.php">Categories</a>
-                            <a class="nav-link" href="tags.php">Tags</a>
-                            <a class="nav-link" href="archive_wiki.php">Archived Wikis</a>
+                            <a class="nav-link" href="wiki.php">Wiki Add</a>
+                            <a class="nav-link" href="mywiki.php">My Wikis</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -85,8 +111,43 @@
             </div>
         </nav>
     </div>
+    <div class="container my-4">
+
     <div id="layoutSidenav_content">
+        <div class="container">
+            <h2>Edit Wiki</h2>
+            <form action="../../app/Controller/WikiController.php" method="post">
+                <input type="hidden" name="id" value="<?= htmlspecialchars($wikiId)?>">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<?= htmlspecialchars($wiki['title']) ?>" required>
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content:</label>
+                    <textarea class="form-control" id="content" name="content" rows="10" required><?= htmlspecialchars($wiki['content']) ?></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <select class="form-control" id="category" name="category">
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= $category['id'] ?>" <?= $category['id'] == $wiki['category_id'] ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Tags:</label>
+                    <?php foreach ($tags as $tag): ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="tag<?= $tag['id'] ?>" name="tags[]" value="<?= $tag['id'] ?>" <?= in_array($tag['id'], $wiki['tags']) ? 'checked' : '' ?>>
+                            <label class="form-check-label" for="tag<?= $tag['id'] ?>"><?= htmlspecialchars($tag['name']) ?></label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <button type="submit" name="update_wiki" class="btn btn-primary">Update Wiki</button>
+            </form>
+        </div>
     </div>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

@@ -33,7 +33,7 @@ class LoginController
             try {
                 $user = $this->userModel->verifyLogin($formData['email'], $formData['password']);
                 if ($user) {
-                    $_SESSION['user_id'] = $user['user_id'];
+                    $_SESSION['user_id'] = $user['id'];
                     $_SESSION['role_id'] = $user['role_id'];
                     $_SESSION['loggedin'] = true;
                     header("Location: ../../index.php");

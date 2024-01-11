@@ -12,6 +12,11 @@ class TagController {
         $this->tagModel = new Tag();
     }
 
+    public function listTags() {
+        $tags = $this->tagModel->showAll();
+        return $tags;
+    }
+
     public function store($formData) {
         if (isset($formData['name'])) {
             $this->tagModel->add($formData['name']);

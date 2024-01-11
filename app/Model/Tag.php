@@ -45,4 +45,13 @@ class Tag
         $stmt = $this->db->prepare("DELETE FROM tags WHERE id=:id");
         return $stmt->execute(["id" => $id]);
     }
+
+    public function countTags()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM tags");
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+
 }

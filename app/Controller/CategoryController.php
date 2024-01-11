@@ -11,6 +11,12 @@ class CategoryController
     {
         $this->categoryModel = new Category();
     }
+
+    public function listCategories() {
+        $categories = $this->categoryModel->showAll();
+        return $categories;
+    }
+
 public function store($formData)
 {
     $this->categoryModel->add($formData["name"]);

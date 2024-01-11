@@ -23,7 +23,7 @@ $tags = $tagModel->showAll();
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.html">Wiki</a>
+    <a class="navbar-brand ps-3" href="../../index.php">Wiki</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -66,8 +66,7 @@ $tags = $tagModel->showAll();
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="categories.php">Categories</a>
                             <a class="nav-link" href="tags.php">Tags</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                            <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                            <a class="nav-link" href="archive_wiki.php">Archived Wikis</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
@@ -98,7 +97,6 @@ $tags = $tagModel->showAll();
     <div class="container my-4">
     <div id="layoutSidenav_content">
         <div class="container my-4">
-            <!-- Add Tag Form -->
             <div class="mt-5">
                 <h2>Add New Tag</h2>
                 <form action="../../app/Controller/TagController.php" method="post">
@@ -110,7 +108,6 @@ $tags = $tagModel->showAll();
                 </form>
             </div>
 
-            <!-- Table to Display Tags -->
             <h1>Tags</h1>
             <p>List of all tags in the Wiki website</p>
             <table class="table">
