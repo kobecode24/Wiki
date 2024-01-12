@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header('Location:   View/auth/login.php');
+    exit;
+}
 require_once 'app/Config/DbConnection.php';
 require_once 'app/Controller/WikiController.php';
 require_once 'app/Controller/CategoryController.php';
