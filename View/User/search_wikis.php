@@ -8,7 +8,7 @@ $wikiController = new WikiController();
 
 $searchQuery = $_GET['search'] ?? '';
 
-if ($searchQuery === '' || $searchQuery === 'all') {
+if ($searchQuery === '') {
     $wikis = $wikiController->getRecentWikis();
 } else {
     $wikis = $wikiController->searchWikis($searchQuery);
@@ -20,7 +20,7 @@ foreach ($wikis as $wiki) {
         'id' => $wiki['id'],
         'title' => htmlspecialchars($wiki['title']),
         'content' => htmlspecialchars(substr($wiki['content'], 0, 150)) . '...',
-        'link' => 'View/User/wiki.php?id=' . $wiki['id']
+        'link' => "View/User/wiki.php?id=" . $wiki['id']
     ];
 }
 

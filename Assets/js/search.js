@@ -1,14 +1,24 @@
-document.getElementById('searchInput').addEventListener('keyup', function() {
-    var searchText = this.value;
+document.getElementById('searchInput').addEventListener('keyup', async function () {
+    const searchText = this.value;
+    const endpoint = 'View/User/search_wikis.php?search=' + encodeURIComponent(searchText);
 
-    var endpoint = searchText ? 'View/User/search_wikis.php?search=' + encodeURIComponent(searchText) : 'View/User/search_wikis.php?search=all';
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        updateSearchResults(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
 
-    fetch(endpoint)
-        .then(response => response.json())
-        .then(data => {
-            updateSearchResults(data);
-        })
-        .catch(error => console.error('Error:', error));
+document.addEventListener('DOMContentLoaded', async function () {
+    try {
+        const response = await fetch('View/User/search_wikis.php');
+        const data = await response.json();
+        updateSearchResults(data);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 });
 
 function updateSearchResults(wikis) {
@@ -32,12 +42,3 @@ function updateSearchResults(wikis) {
 
     document.getElementById('resultsArea').innerHTML = resultsHtml;
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('View/User/search_wikis.php?search=all')
-        .then(response => response.json())
-        .then(data => {
-            updateSearchResults(data);
-        })
-        .catch(error => console.error('Error:', error));
-});
