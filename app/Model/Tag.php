@@ -54,4 +54,9 @@ class Tag
     }
 
 
+    public function getTotalTagCount() {
+        $sql = "SELECT COUNT(*) FROM Tags";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchColumn();
+    }
 }

@@ -1,3 +1,18 @@
+<?php
+
+use MyApp\Controller\WikiController;
+
+session_start();
+
+require_once '../../app/Config/DbConnection.php';
+require_once '../../app/Controller/WikiController.php';
+
+$wikiController = new WikiController();
+
+$stats = $wikiController->getStatistics();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,7 +101,30 @@
         </nav>
     </div>
     <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <div class="row">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-primary text-white mb-4">
+                            <div class="card-body">Total Wikis: <?= $stats['totalWikis'] ?></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-success text-white mb-4">
+                            <div class="card-body">Total Categories: <?= $stats['totalCategories'] ?></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card bg-danger text-white mb-4">
+                            <div class="card-body">Total Tags: <?= $stats['totalTags'] ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

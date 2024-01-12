@@ -43,4 +43,17 @@ class Category
         $stmt=$this->db->prepare("DELETE FROM categories WHERE id=:id");
         return $stmt->execute(["id"=>$id]);
     }
+    public function getRecentCategories($limit = 5)
+    {
+            $stmt = $this->db->prepare("SELECT * FROM categories ORDER BY id DESC LIMIT :limit");
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalCategoryCount() {
+        $sql = "SELECT COUNT(*) FROM Categories";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchColumn();
+    }
 }

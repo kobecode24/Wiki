@@ -73,32 +73,19 @@ class Wiki
         return $stmt->rowCount();
     }
 
-    public function getWikisByCategory($categoryId) {
-        $stmt = $this->db->prepare("SELECT * FROM Wikis WHERE category_id = :categoryId");
-        $stmt->execute([':categoryId' => $categoryId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getWikisByAuthor($authorId) {
         $stmt = $this->db->prepare("SELECT * FROM Wikis WHERE author_id = :authorId");
         $stmt->execute([':authorId' => $authorId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRecentWikis($limit = 10) {
-        $stmt = $this->db->prepare("SELECT * FROM Wikis ORDER BY id DESC LIMIT :limit");
-        $stmt->execute([':limit' => $limit]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getWikisByTag($tagId) {
-        $stmt = $this->db->prepare("SELECT Wikis.* FROM Wikis JOIN WikiTags ON Wikis.id = WikiTags.wiki_id WHERE WikiTags.tag_id = :tagId");
-        $stmt->execute([':tagId' => $tagId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function getArchivedWikis() {
-        $stmt = $this->db->prepare("SELECT * FROM Wikis WHERE is_archived = 1");
+    public function getRecentWikis($limit = 5) {
+        $stmt = $this->db->prepare("
+            SELECT * FROM Wikis 
+            WHERE is_archived = 0 
+            ORDER BY id DESC 
+            LIMIT :limit");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -135,4 +122,38 @@ class Wiki
         $stmt = $this->db->prepare("UPDATE Wikis SET is_archived = 0 WHERE id = :id");
         $stmt->execute([':id' => $id]);
     }
+
+    public function getWikiDetails($wikiId) {
+        $stmt = $this->db->prepare("
+            SELECT Wikis.id, Wikis.title, Wikis.content, Wikis.is_archived,
+                   Users.username AS author, Categories.name AS category,
+                   GROUP_CONCAT(Tags.name ORDER BY Tags.name ASC SEPARATOR ', ') AS tags
+            FROM Wikis
+                     INNER JOIN Users ON Wikis.author_id = Users.id
+                     INNER JOIN Categories ON Wikis.category_id = Categories.id
+                     LEFT JOIN WikiTags ON Wikis.id = WikiTags.wiki_id
+                     LEFT JOIN Tags ON WikiTags.tag_id = Tags.id
+            WHERE Wikis.id = :wikiId
+            GROUP BY Wikis.id
+        ");
+        $stmt->execute([':wikiId' => $wikiId]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function searchWikis($searchTerm) {
+        $query = "SELECT * FROM Wikis WHERE title LIKE :searchTerm AND is_archived = 0";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([':searchTerm' => '%' . $searchTerm . '%']);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalWikiCount() {
+        $sql = "SELECT COUNT(*) FROM Wikis";
+        $stmt = $this->db->query($sql);
+        return $stmt->fetchColumn();
+    }
+
+
+
+
 }

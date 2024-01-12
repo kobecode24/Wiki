@@ -1,6 +1,6 @@
 <?php
 
-namespace Myapp\Model;
+namespace MyApp\Model;
 
 use MyApp\Config\DbConnection;
 use PDO;
@@ -48,4 +48,5 @@ public function verifyLogin($email,$password)
     }
     return false;
 }
+
 }

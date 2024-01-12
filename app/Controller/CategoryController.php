@@ -13,16 +13,15 @@ class CategoryController
     }
 
     public function listCategories() {
-        $categories = $this->categoryModel->showAll();
-        return $categories;
+        return $this->categoryModel->showAll();
     }
 
-public function store($formData)
-{
-    $this->categoryModel->add($formData["name"]);
-    header('Location: ../../View/admin/categories.php');
-    exit;
-}
+    public function store($formData)
+    {
+        $this->categoryModel->add($formData["name"]);
+        header('Location: ../../View/admin/categories.php');
+        exit;
+    }
 
     public function update($formData)
     {
@@ -48,6 +47,12 @@ public function store($formData)
             }
         }
     }
+
+    public function getRecentCategories()
+    {
+        return $this->categoryModel->getRecentCategories();
+    }
+
 }
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
